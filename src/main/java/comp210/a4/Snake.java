@@ -59,6 +59,10 @@ public class Snake {
      */
     public void advance(Cell newHead, boolean grow) {
         // TODO: two queue operations, one of them only when not growing
+        this.body.enqueue(newHead);
+        if (!grow) {
+            this.body.dequeue();
+        }
     }
 
     /**
@@ -67,6 +71,8 @@ public class Snake {
      */
     public boolean shrink() {
         // TODO
-        return false;
+        this.body.dequeue();
+        if (this.body.isEmpty()) {return false;}
+        return true;
     }
 }

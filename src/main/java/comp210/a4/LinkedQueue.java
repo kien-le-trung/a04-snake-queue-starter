@@ -40,6 +40,21 @@ public class LinkedQueue<E> implements Iterable<E> {
      */
     public void enqueue(E item) {
         // TODO
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null");
+        }
+        // empty case
+        if (this.isEmpty()) {
+            head = new Node<>(item);
+            tail = head;
+            this.size = 1;
+        } else {
+            //other cases
+            tail.next = new Node<>(item);
+            tail = tail.next;
+            this.size++;
+        }
+
     }
 
     /**
@@ -49,7 +64,14 @@ public class LinkedQueue<E> implements Iterable<E> {
      */
     public E dequeue() {
         // TODO
-        return null;
+        this.checkEmpty();
+        Node<E> removed = head;
+        head = head.next;
+        this.size--;
+        if (head == null) {
+            tail = null;
+        }
+        return removed.data;
     }
 
     /**
@@ -59,7 +81,9 @@ public class LinkedQueue<E> implements Iterable<E> {
      */
     public E peek() {
         // TODO
-        return null;
+        this.checkEmpty();
+        Node<E> peeked = head;
+        return peeked.data;
     }
 
     /**
@@ -69,18 +93,23 @@ public class LinkedQueue<E> implements Iterable<E> {
      */
     public E peekLast() {
         // TODO
-        return null;
+        this.checkEmpty();
+        Node<E> last = tail;
+        return last.data;
     }
 
     /** Returns how many items are in the queue. */
     public int size() {
         // TODO
-        return 0;
+        return this.size;
     }
 
     /** Returns true when the queue holds no items. */
     public boolean isEmpty() {
         // TODO
+        if (head != null) {
+            return false;
+        }
         return true;
     }
 
@@ -90,7 +119,23 @@ public class LinkedQueue<E> implements Iterable<E> {
      */
     public boolean contains(E item) {
         // TODO
+        if (this.isEmpty()) {
+            return false;
+        }
+        Node<E> curr = head;
+        while (curr != null) {
+            if (curr.data.equals(item)) {
+                return true;
+            }
+            curr = curr.next;
+        }
         return false;
+    }
+
+    private void checkEmpty() {
+        if (this.isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
     }
 
     // ------------------------------------------------------------------
